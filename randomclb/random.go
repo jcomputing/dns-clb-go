@@ -1,6 +1,7 @@
 package randomclb
 
 import (
+	"errors"
 	"github.com/jcomputing/dns-clb-go/dns"
 	"math/rand"
 )
@@ -23,6 +24,9 @@ func (lb *RandomClb) GetAddress(name string) (dns.Address, error) {
 		return add, err
 	}
 	//	log.Printf("%+v", srvs)
+	if len(srvs) == 0 {
+		return add, errors.New("No SRV records found.")
+	}
 
 	srv := srvs[rand.Intn(len(srvs))]
 
