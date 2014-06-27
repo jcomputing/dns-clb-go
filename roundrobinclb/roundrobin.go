@@ -48,9 +48,7 @@ func (lb *RoundRobinClb) GetAddress(name string) (dns.Address, error) {
 	log.Println(srvs)
 	log.Println(srvs[0])
 	//	log.Printf("%+v", srvs)
-	if len(srvs)-1 > lb.i {
-		lb.i = 0
-	}
+	lb.i = lb.i % len(srvs)
 	log.Println(lb.i)
 	srv := srvs[lb.i]
 	lb.i = lb.i + 1
