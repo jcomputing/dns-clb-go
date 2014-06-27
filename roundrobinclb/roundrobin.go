@@ -3,6 +3,7 @@ package roundrobinclb
 import (
 	"fmt"
 	"github.com/benschw/dns-clb-go/dns"
+	"log"
 	"net"
 	"sort"
 )
@@ -33,11 +34,16 @@ func (lb *RoundRobinClb) GetAddress(name string) (dns.Address, error) {
 	if err != nil {
 		return add, err
 	}
-	sort.Sort(ByTarget(srvs))
+
+	log.Println(len(srvs))
 
 	if len(srvs) == 0 {
 		return add, fmt.Errorf("no SRV records found")
 	}
+
+	sort.Sort(ByTarget(srvs))
+
+	log.Println(len(srvs))
 	//	log.Printf("%+v", srvs)
 	if len(srvs)-1 > lb.i {
 		lb.i = 0
