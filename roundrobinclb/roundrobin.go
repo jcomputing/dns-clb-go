@@ -36,6 +36,7 @@ func (lb *RoundRobinClb) GetAddress(name string) (dns.Address, error) {
 	}
 
 	log.Println(len(srvs))
+	log.Println(srvs)
 
 	if len(srvs) == 0 {
 		return add, fmt.Errorf("no SRV records found")
