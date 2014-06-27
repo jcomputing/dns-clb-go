@@ -32,7 +32,7 @@ func NewClb(address string, port string, lbType LoadBalancerType) LoadBalancer {
 	return buildClb(lib, lbType)
 }
 
-func NewTtlCacheClb(address string, port string, lbType LoadBalancerType, ttl int) LoadBalancer {
+func NewTtlCacheClb(address string, port string, lbType LoadBalancerType, ttl int32) LoadBalancer {
 	lib := dns.NewLookupLib(fmt.Sprintf("%s:%s", address, port))
 	cache := ttlcache.NewTtlCache(lib, ttl)
 
