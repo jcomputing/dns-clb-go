@@ -2,8 +2,8 @@ package ttlcache
 
 import (
 	"fmt"
-	"github.com/benschw/dns-clb-go/dns"
-	"github.com/benschw/dns-clb-go/randomclb"
+	"github.com/jcomputing/dns-clb-go/dns"
+	"github.com/jcomputing/dns-clb-go/randomclb"
 	"log"
 	"testing"
 )

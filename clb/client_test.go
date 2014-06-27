@@ -2,7 +2,7 @@ package clb
 
 import (
 	"fmt"
-	"github.com/benschw/dns-clb-go/dns"
+	"github.com/jcomputing/dns-clb-go/dns"
 	"log"
 	"testing"
 )
