@@ -16,14 +16,14 @@ func (a ByTarget) Less(i, j int) bool { return a[i].Target < a[j].Target }
 func NewRoundRobinClb(lib dns.Lookup) *RoundRobinClb {
 	lb := new(RoundRobinClb)
 	lb.dnsLib = lib
-	lb.i = 0
+	lb.i = make(map[string]int)
 
 	return lb
 }
 
 type RoundRobinClb struct {
 	dnsLib dns.Lookup
-	i      int
+	i      map[string]int
 }
 
 func (lb *RoundRobinClb) GetAddress(name string) (dns.Address, error) {
@@ -41,9 +41,10 @@ func (lb *RoundRobinClb) GetAddress(name string) (dns.Address, error) {
 	sort.Sort(ByTarget(srvs))
 
 	//	log.Printf("%+v", srvs)
-	lb.i = lb.i % len(srvs)
-	srv := srvs[lb.i]
-	lb.i = lb.i + 1
+	i := lb.i[name]
+	i = i % len(srvs)
+	srv := srvs[i]
+	lb.i[name] = i + 1
 
 	ip, err := lb.dnsLib.LookupA(srv.Target)
 	if err != nil {
