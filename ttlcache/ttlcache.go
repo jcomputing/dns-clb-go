@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func NewTtlCache(lib dns.Lookup, ttl int) *TtlCache {
+func NewTtlCache(lib dns.Lookup, ttl int32) *TtlCache {
 	c := new(TtlCache)
 	c.lib = lib
 	c.ttl = ttl
@@ -17,9 +17,9 @@ func NewTtlCache(lib dns.Lookup, ttl int) *TtlCache {
 
 type TtlCache struct {
 	lib        dns.Lookup
-	ttl        int
+	ttl        int32
 	lastUpdate int32
-	srvs       []net.SRV
+	srvs       map[string][]net.SRV
 	as         map[string]string
 }
 
@@ -28,14 +28,14 @@ func (l *TtlCache) LookupSRV(name string) ([]net.SRV, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	if len(l.srvs) == 0 {
-		l.srvs, err = l.lib.LookupSRV(name)
+	_, ok := l.srvs[name]
+	if !ok {
+		l.srvs[name], err = l.lib.LookupSRV(name)
 		if err != nil {
 			return nil, err
 		}
 	}
-	return l.srvs, nil
+	return l.srvs[name], nil
 }
 
 func (l *TtlCache) LookupA(name string) (string, error) {
@@ -57,9 +57,9 @@ func (l *TtlCache) LookupA(name string) (string, error) {
 
 func (l *TtlCache) checkCache() error {
 	now := int32(time.Now().Unix())
-	if l.lastUpdate+int32(l.ttl) < now {
+	if l.lastUpdate+l.ttl < now {
 		l.lastUpdate = now
-		l.srvs = []net.SRV{}
+		l.srvs = map[string][]net.SRV{}
 		l.as = map[string]string{}
 	}
 	return nil
