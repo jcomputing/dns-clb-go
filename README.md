@@ -1,4 +1,4 @@
-[![Build Status](https://drone.io/github.com/benschw/dns-clb-go/status.png)](https://drone.io/github.com/benschw/dns-clb-go/latest)
+[![Build Status](https://drone.io/github.com/jcomputing/dns-clb-go/status.png)](https://drone.io/github.com/jcomputing/dns-clb-go/latest)
 [![GoDoc](http://godoc.org/github.com/benschw/dns-clb-go?status.png)](http://godoc.org/github.com/benschw/dns-clb-go)
 
 # DNS Client Load Balancer for Go
